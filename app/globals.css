@@ -164,7 +164,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 
 /* SECTION NAV */
 .section-nav{display:flex;align-items:center;gap:0;background:#1a1916;border-bottom:2px solid #333}
-.section-btn{padding:0.7rem 1.4rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'DM Mono',monospace;background:none;border:none;color:#666;cursor:pointer;transition:color .15s,background .15s;font-weight:500}
+.section-btn{padding:0.7rem 1.1rem;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Mono',monospace;background:none;border:none;color:#666;cursor:pointer;transition:color .15s,background .15s;font-weight:500}
 .section-btn:hover{color:#ccc}
 .section-btn.active.atg{color:#f0c040;border-bottom:2px solid #f0c040;margin-bottom:-2px}
 .section-btn.active.bb{color:#d080e0;border-bottom:2px solid #d080e0;margin-bottom:-2px}
@@ -287,3 +287,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 .profile-stats{display:flex;gap:16px;margin-top:4px}
 .profile-stat{font-size:10px;color:var(--muted)}
 .profile-stat strong{color:var(--text);font-size:12px}
+
+/* ── WORKOUT SESSION ── */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:14px}
