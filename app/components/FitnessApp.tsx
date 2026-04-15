@@ -21,6 +21,7 @@ export default function FitnessApp() {
   const [addOpen, setAddOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newTags, setNewTags] = useState<string[]>([]);
+  const [poolFilter, setPoolFilter] = useState("all");
 
   // Load data from API on mount
   useEffect(() => {
@@ -217,7 +218,8 @@ export default function FitnessApp() {
   );
 
   const poolEx = exercises.filter(ex =>
-    !poolSearch || ex.name.toLowerCase().includes(poolSearch.toLowerCase())
+    (poolFilter === "all" || ex.tags.includes(poolFilter)) &&
+    (!poolSearch || ex.name.toLowerCase().includes(poolSearch.toLowerCase()))
   );
 
   const stats = getStats();
@@ -302,6 +304,14 @@ export default function FitnessApp() {
             <div className="pool-wrap">
               <div className="pool-hdr"><span className="pool-title">Exercise pool</span><span className="pool-cnt">{poolEx.length}</span></div>
               <input className="pool-search" type="text" placeholder="Search..." value={poolSearch} onChange={e => setPoolSearch(e.target.value)} />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4, padding: "6px 6px 2px" }}>
+                {[["all","All"],["gym","Gym"],["home","Home"],["strength","Str"],["mobility","Mob"]].map(([f, label]) => (
+                  <button key={f} onClick={() => setPoolFilter(f)}
+                    style={{ fontSize: 9, padding: "2px 7px", borderRadius: 3, border: `1px solid ${poolFilter === f ? "var(--border2)" : "var(--border)"}`, background: poolFilter === f ? "var(--s2)" : "transparent", color: poolFilter === f ? "var(--text)" : "var(--muted)", cursor: "pointer", fontFamily: "inherit", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    {label}
+                  </button>
+                ))}
+              </div>
               <div className="pool-list">
                 {poolEx.map(ex => {
                   const used = useCount(ex.id);
