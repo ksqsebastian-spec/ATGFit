@@ -42,6 +42,8 @@ export default function BodybuildingApp() {
   const [addOpen, setAddOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newTags, setNewTags] = useState<string[]>([]);
+  const [poolMuscle, setPoolMuscle] = useState("all");
+  const [poolEquip, setPoolEquip] = useState("all");
 
   useEffect(() => {
     Promise.all([
@@ -167,7 +169,12 @@ export default function BodybuildingApp() {
     return muscleMatch && equipMatch;
   });
 
-  const poolEx = exercises.filter(ex => !poolSearch || ex.name.toLowerCase().includes(poolSearch.toLowerCase()));
+  const poolEx = exercises.filter(ex => {
+    const mMatch = poolMuscle === "all" || ex.tags.includes(poolMuscle) || (poolMuscle === "arms" && (ex.tags.includes("biceps") || ex.tags.includes("triceps")));
+    const eMatch = poolEquip === "all" || ex.tags.includes(poolEquip);
+    const sMatch = !poolSearch || ex.name.toLowerCase().includes(poolSearch.toLowerCase());
+    return mMatch && eMatch && sMatch;
+  });
   const stats = getStats();
   const ALL_TAGS = ["glutes","abs","chest","back","shoulders","biceps","triceps","legs","barbell","dumbbell","cable","machine","bodyweight"];
 
@@ -265,6 +272,22 @@ export default function BodybuildingApp() {
             <div className="pool-wrap">
               <div className="pool-hdr"><span className="pool-title">Exercise pool</span><span className="pool-cnt">{poolEx.length}</span></div>
               <input className="pool-search" type="text" placeholder="Search..." value={poolSearch} onChange={e=>setPoolSearch(e.target.value)} />
+              <div style={{display:"flex",flexWrap:"wrap",gap:4,padding:"6px 6px 0"}}>
+                {[["all","All"],["glutes","Glt"],["abs","Abs"],["chest","Che"],["back","Bck"],["shoulders","Shl"],["arms","Arm"],["legs","Leg"]].map(([f,label])=>(
+                  <button key={f} onClick={()=>setPoolMuscle(f)}
+                    style={{fontSize:9,padding:"2px 6px",borderRadius:3,border:`1px solid ${poolMuscle===f?"#d080e0":"var(--border)"}`,background:poolMuscle===f?"#f8eefb":"transparent",color:poolMuscle===f?"#8040a0":"var(--muted)",cursor:"pointer",fontFamily:"inherit",textTransform:"uppercase"}}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:4,padding:"4px 6px 2px"}}>
+                {[["all","All Equip"],["barbell","BB"],["dumbbell","DB"],["cable","Cable"],["machine","Mach"],["bodyweight","BW"]].map(([f,label])=>(
+                  <button key={f} onClick={()=>setPoolEquip(f)}
+                    style={{fontSize:9,padding:"2px 6px",borderRadius:3,border:`1px solid ${poolEquip===f?"#888":"var(--border)"}`,background:poolEquip===f?"var(--s2)":"transparent",color:poolEquip===f?"var(--text)":"var(--muted)",cursor:"pointer",fontFamily:"inherit",textTransform:"uppercase"}}>
+                    {label}
+                  </button>
+                ))}
+              </div>
               <div className="pool-list">
                 {poolEx.map(ex => (
                   <div key={ex.id} className="chip" draggable onDragStart={()=>{dragRef.current={type:"pool",exId:ex.id};}}>
