@@ -1,0 +1,68 @@
+-- Bodybuilding exercise seed data
+INSERT INTO bb_exercises (id, name, tags) VALUES
+  -- Glutes
+  ('b01','Hip thrust',               ARRAY['glutes','barbell']),
+  ('b02','Bulgarian split squat',    ARRAY['glutes','legs','dumbbell']),
+  ('b03','Cable glute kickback',     ARRAY['glutes','cable']),
+  ('b04','Sumo squat',               ARRAY['glutes','legs','barbell']),
+  ('b05','Frog pump',                ARRAY['glutes','bodyweight']),
+  ('b06','Banded side walk',         ARRAY['glutes','bodyweight']),
+  ('b07','Donkey kick',              ARRAY['glutes','bodyweight']),
+  ('b08','Fire hydrant',             ARRAY['glutes','bodyweight']),
+  ('b09','Romanian deadlift',        ARRAY['glutes','legs','barbell']),
+  ('b10','Single leg glute bridge',  ARRAY['glutes','bodyweight']),
+  ('b11','Cable pull-through',       ARRAY['glutes','cable']),
+  -- Abs
+  ('b12','Crunch',                   ARRAY['abs','bodyweight']),
+  ('b13','Plank',                    ARRAY['abs','bodyweight']),
+  ('b14','Hanging leg raise',        ARRAY['abs','bodyweight']),
+  ('b15','Cable crunch',             ARRAY['abs','cable']),
+  ('b16','Russian twist',            ARRAY['abs','bodyweight']),
+  ('b17','Bicycle crunch',           ARRAY['abs','bodyweight']),
+  ('b18','V-up',                     ARRAY['abs','bodyweight']),
+  ('b19','Ab rollout',               ARRAY['abs','bodyweight']),
+  ('b20','Dragon flag',              ARRAY['abs','bodyweight']),
+  ('b21','Hollow body hold',         ARRAY['abs','bodyweight']),
+  -- Chest
+  ('b22','Bench press',              ARRAY['chest','barbell']),
+  ('b23','Incline bench press',      ARRAY['chest','barbell']),
+  ('b24','Dumbbell fly',             ARRAY['chest','dumbbell']),
+  ('b25','Cable fly',                ARRAY['chest','cable']),
+  ('b26','Incline dumbbell press',   ARRAY['chest','dumbbell']),
+  ('b27','Pec deck',                 ARRAY['chest','machine']),
+  -- Back
+  ('b28','Lat pulldown',             ARRAY['back','machine']),
+  ('b29','Seated cable row',         ARRAY['back','cable']),
+  ('b30','Single arm dumbbell row',  ARRAY['back','dumbbell']),
+  ('b31','Barbell row',              ARRAY['back','barbell']),
+  ('b32','T-bar row',                ARRAY['back','barbell']),
+  ('b33','Deadlift',                 ARRAY['back','legs','barbell']),
+  -- Shoulders
+  ('b34','Dumbbell shoulder press',  ARRAY['shoulders','dumbbell']),
+  ('b35','Lateral raise',            ARRAY['shoulders','dumbbell']),
+  ('b36','Front raise',              ARRAY['shoulders','dumbbell']),
+  ('b37','Rear delt fly',            ARRAY['shoulders','dumbbell']),
+  ('b38','Arnold press',             ARRAY['shoulders','dumbbell']),
+  ('b39','Cable lateral raise',      ARRAY['shoulders','cable']),
+  -- Biceps
+  ('b40','Barbell curl',             ARRAY['biceps','barbell']),
+  ('b41','Dumbbell curl',            ARRAY['biceps','dumbbell']),
+  ('b42','Hammer curl',              ARRAY['biceps','dumbbell']),
+  ('b43','Cable curl',               ARRAY['biceps','cable']),
+  ('b44','Preacher curl',            ARRAY['biceps','machine']),
+  -- Triceps
+  ('b45','Tricep pushdown',          ARRAY['triceps','cable']),
+  ('b46','Skull crusher',            ARRAY['triceps','barbell']),
+  ('b47','Overhead tricep extension',ARRAY['triceps','dumbbell']),
+  ('b48','Close grip bench press',   ARRAY['triceps','barbell']),
+  ('b49','Tricep dips',              ARRAY['triceps','bodyweight']),
+  -- Legs
+  ('b50','Back squat',               ARRAY['legs','barbell']),
+  ('b51','Leg press',                ARRAY['legs','machine']),
+  ('b52','Leg extension',            ARRAY['legs','machine']),
+  ('b53','Leg curl',                 ARRAY['legs','machine']),
+  ('b54','Walking lunge',            ARRAY['legs','dumbbell']),
+  ('b55','Hack squat',               ARRAY['legs','machine']),
+  ('b56','Cossack squat',            ARRAY['legs','bodyweight']),
+  ('b57','Weighted fly',             ARRAY['chest','dumbbell'])
+ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, tags = EXCLUDED.tags;
