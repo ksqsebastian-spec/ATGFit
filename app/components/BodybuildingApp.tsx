@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Exercise, Day, Program, tStyle } from "./types";
 import HistoryCard from "./HistoryCard";
+import { useUser } from "./UserContext";
 
 const MUSCLE_GROUPS = ["all","glutes","abs","chest","back","shoulders","arms","legs"];
 const EQUIPMENT = ["all","barbell","dumbbell","cable","machine","bodyweight"];
@@ -24,6 +25,7 @@ function bbTLabel(t: string) {
 }
 
 export default function BodybuildingApp() {
+  const user = useUser();
   const [tab, setTab] = useState("library");
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [days, setDays] = useState<Day[]>([]);
@@ -80,7 +82,14 @@ export default function BodybuildingApp() {
     const name = snapName.trim() || ("Program " + new Date().toLocaleDateString("de-DE"));
     const snap: Program = {id:"h"+Date.now(), name, days:JSON.parse(JSON.stringify(days)), created_at:new Date().toISOString()};
     setHistory(prev => [snap, ...prev]); setModalOpen(false);
-    await fetch("/api/bb-programs", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id:snap.id,name:snap.name,days:snap.days}) });
+    const enrichedDays = days.map(day => ({
+      ...day,
+      exercises: day.exercises.map(item => ({ ...item, name: exById(item.id)?.name || item.id })),
+    }));
+    await Promise.all([
+      fetch("/api/bb-programs", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id:snap.id,name,days:snap.days,user_id:user?.id}) }),
+      user && fetch("/api/posts", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id:"p"+snap.id,userId:user.id,section:"bodybuilding",title:name,days:enrichedDays}) }),
+    ]);
     alert("Saved: " + name);
   };
 

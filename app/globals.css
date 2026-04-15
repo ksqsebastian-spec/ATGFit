@@ -245,3 +245,45 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
   .days-grid{grid-template-columns:1fr}
   .hero h1{font-size:1.4rem}
 }
+
+/* ── SOCIAL ── */
+.avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;flex-shrink:0;letter-spacing:0.02em}
+.avatar-sm{width:24px;height:24px;font-size:9px}
+.feed-post{background:var(--s1);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.feed-post-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:var(--s2)}
+.feed-post-meta{flex:1;min-width:0}
+.feed-user-name{font-size:12px;font-weight:500;color:var(--text)}
+.feed-post-time{font-size:10px;color:var(--muted)}
+.section-badge{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px;font-weight:500}
+.section-badge-atg{background:#fdf8e8;color:#9a6f1a;border:1px solid #e8d898}
+.section-badge-bb{background:#f8eefb;color:#8040a0;border:1px solid #d0a0e0}
+.feed-post-body{padding:12px 14px}
+.feed-post-title{font-size:13px;font-weight:500;margin-bottom:10px}
+.feed-day{margin-bottom:8px}
+.feed-day-hdr{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.feed-ex-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border);font-size:11px}
+.feed-ex-sets{font-size:10px;color:var(--muted)}
+.reaction-bar{display:flex;gap:5px;padding:10px 14px;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center}
+.reaction-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:20px;border:1px solid var(--border);background:var(--s2);cursor:pointer;font-size:13px;color:var(--muted);transition:all .15s;line-height:1}
+.reaction-btn:hover{background:var(--s3);border-color:var(--border2)}
+.reaction-btn.reacted{background:#fdf8e8;border-color:#d4b060;color:var(--text)}
+.reaction-count{font-size:10px;font-family:'DM Mono',monospace}
+.comments-section{border-top:1px solid var(--border);padding:10px 14px}
+.comment-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.comment-text-wrap{flex:1;background:var(--s2);border-radius:6px;padding:6px 10px}
+.comment-author{font-size:10px;font-weight:500;color:var(--text);margin-bottom:2px}
+.comment-text{font-size:11px;color:var(--text)}
+.comment-time{font-size:9px;color:var(--muted)}
+.comment-input-row{display:flex;gap:6px;margin-top:6px}
+.comment-inp{flex:1;padding:6px 10px;background:var(--s2);border:1px solid var(--border);border-radius:20px;font-family:'DM Mono',monospace;font-size:11px;outline:none}
+.comment-inp:focus{border-color:var(--border2)}
+.friend-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--s1);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+.friend-name{font-size:12px;flex:1}
+.friend-handle{font-size:10px;color:var(--muted)}
+.social-profile-bar{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:14px;margin-bottom:1.5rem}
+.profile-info{flex:1}
+.profile-name{font-size:15px;font-weight:500}
+.profile-handle{font-size:11px;color:var(--muted)}
+.profile-stats{display:flex;gap:16px;margin-top:4px}
+.profile-stat{font-size:10px;color:var(--muted)}
+.profile-stat strong{color:var(--text);font-size:12px}
