@@ -39,6 +39,9 @@ export default function BodybuildingApp() {
   const [loading, setLoading] = useState(true);
   const [tagPopup, setTagPopup] = useState<{exId:string;x:number;y:number}|null>(null);
   const dragRef = useRef<{type:string;exId:string;fromDay?:string;idx?:number}|null>(null);
+  const [addOpen, setAddOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newTags, setNewTags] = useState<string[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -54,6 +57,21 @@ export default function BodybuildingApp() {
   const updateTags = async (exId: string, tags: string[]) => {
     setExercises(prev => prev.map(e => e.id === exId ? { ...e, tags } : e));
     await fetch("/api/bb-exercises", { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ id: exId, tags }) });
+  };
+
+  const addExercise = async () => {
+    const name = newName.trim();
+    if (!name) return;
+    const id = "custom_" + Date.now();
+    const created = await fetch("/api/bb-exercises", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ id, name, tags: newTags }) }).then(r => r.json());
+    setExercises(prev => [...prev, created]);
+    setNewName(""); setNewTags([]); setAddOpen(false);
+  };
+
+  const deleteExercise = async (exId: string) => {
+    if (!confirm("Remove this exercise?")) return;
+    setExercises(prev => prev.filter(e => e.id !== exId));
+    await fetch("/api/bb-exercises", { method: "DELETE", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ id: exId }) });
   };
 
   const addDay = () => { const nc = dayCounter+1; setDayCounter(nc); setDays(prev => [...prev, {id:"d"+nc,num:nc,label:"",env:"gym",exercises:[]}]); };
@@ -167,7 +185,7 @@ export default function BodybuildingApp() {
       <div className="main">
         {/* LIBRARY */}
         <div className={`panel${tab==="library"?" active":""}`}>
-          <div className="hero"><h1>Exercise Library</h1><div className="hero-sub">Bodybuilding &middot; 57 exercises</div></div>
+          <div className="hero"><h1>Exercise Library</h1><div className="hero-sub">Bodybuilding &middot; {exercises.length} exercises</div></div>
           <div className="filter-row">
             {MUSCLE_GROUPS.map(f => (
               <button key={f} className={`fbtn${muscleFilter===f?" active":""}`} onClick={()=>setMuscleFilter(f)}
@@ -185,7 +203,7 @@ export default function BodybuildingApp() {
             ))}
           </div>
           <table className="ex-table">
-            <thead><tr><th>Exercise</th><th>Tags</th></tr></thead>
+            <thead><tr><th>Exercise</th><th>Tags</th><th></th></tr></thead>
             <tbody>
               {filteredEx.map(ex => (
                 <tr key={ex.id}>
@@ -198,10 +216,45 @@ export default function BodybuildingApp() {
                       <span className="add-tag-btn" onClick={e=>{e.stopPropagation();setTagPopup({exId:ex.id,x:e.clientX,y:e.clientY+8});}}>+tag</span>
                     </div>
                   </td>
+                  <td><button className="btn btn-danger" style={{fontSize:9,padding:"2px 6px"}} onClick={()=>deleteExercise(ex.id)}>&times;</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+          {/* Add exercise */}
+          <div style={{marginTop:16}}>
+            {!addOpen ? (
+              <button className="btn btn-add" style={{fontSize:10}} onClick={()=>setAddOpen(true)}>+ Add exercise</button>
+            ) : (
+              <div style={{background:"var(--s1)",border:"1px solid var(--border)",borderRadius:8,padding:14}}>
+                <div style={{fontSize:10,letterSpacing:"0.1em",textTransform:"uppercase",color:"var(--muted)",marginBottom:8}}>New Exercise</div>
+                <input className="form-inp" style={{width:"100%",marginBottom:10}} placeholder="Exercise name" value={newName} onChange={e=>setNewName(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addExercise()} autoFocus />
+                <div style={{marginBottom:6,fontSize:10,color:"var(--muted)",textTransform:"uppercase",letterSpacing:"0.08em"}}>Muscle group</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:10}}>
+                  {["glutes","abs","chest","back","shoulders","biceps","triceps","legs"].map(t=>(
+                    <label key={t} style={{display:"flex",alignItems:"center",gap:4,fontSize:11,cursor:"pointer"}}>
+                      <input type="checkbox" checked={newTags.includes(t)} onChange={e=>setNewTags(prev=>e.target.checked?[...prev,t]:prev.filter(x=>x!==t))} />
+                      {bbTLabel(t)}
+                    </label>
+                  ))}
+                </div>
+                <div style={{marginBottom:6,fontSize:10,color:"var(--muted)",textTransform:"uppercase",letterSpacing:"0.08em"}}>Equipment</div>
+                <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:10}}>
+                  {["barbell","dumbbell","cable","machine","bodyweight"].map(t=>(
+                    <label key={t} style={{display:"flex",alignItems:"center",gap:4,fontSize:11,cursor:"pointer"}}>
+                      <input type="checkbox" checked={newTags.includes(t)} onChange={e=>setNewTags(prev=>e.target.checked?[...prev,t]:prev.filter(x=>x!==t))} />
+                      {bbTLabel(t)}
+                    </label>
+                  ))}
+                </div>
+                <div style={{display:"flex",gap:8}}>
+                  <button className="btn btn-save" style={{fontSize:10}} onClick={addExercise} disabled={!newName.trim()}>Add</button>
+                  <button className="btn" style={{fontSize:10}} onClick={()=>{setAddOpen(false);setNewName("");setNewTags([]);}}>Cancel</button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* BUILDER */}
