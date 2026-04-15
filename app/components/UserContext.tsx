@@ -6,6 +6,7 @@ export interface User {
   name: string;
   handle: string;
   avatar_color: string;
+  dog_id?: number;
 }
 
 const UserContext = createContext<User | null>(null);

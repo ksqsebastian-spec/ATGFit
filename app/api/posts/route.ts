@@ -10,11 +10,9 @@ export async function GET(request: Request) {
 
   const posts = await sql`
     SELECT wp.id, wp.user_id, wp.section, wp.title, wp.days, wp.created_at,
-           u.name AS user_name, u.avatar_color
+           u.name AS user_name, u.avatar_color, u.dog_id
     FROM workout_posts wp
     JOIN users u ON u.id = wp.user_id
-    WHERE wp.user_id = ${userId}
-       OR wp.user_id IN (SELECT friend_id FROM friendships WHERE user_id = ${userId})
     ORDER BY wp.created_at DESC
     LIMIT 50
   `;
