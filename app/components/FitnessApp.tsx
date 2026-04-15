@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Exercise, Day, Program, DayExercise, tClass, tLabel, tStyle } from "./types";
+import HistoryCard from "./HistoryCard";
 
 export default function FitnessApp() {
   const [tab, setTab] = useState("exercises");
@@ -325,39 +326,30 @@ export default function FitnessApp() {
 
         {/* HISTORY */}
         <div className={`panel${tab === "history" ? " active" : ""}`}>
-          <div className="hero"><h1>Program History</h1><div className="hero-sub">Saved snapshots</div></div>
+          <div className="hero"><h1>Saved Programs</h1><div className="hero-sub">Click a program to expand &amp; edit sets/reps</div></div>
           <div className="btns-row" style={{ marginBottom: "1rem" }}>
-            <button className="btn btn-danger" onClick={clearHistory}>Clear history</button>
+            <button className="btn btn-danger" onClick={clearHistory}>Clear all</button>
           </div>
           {history.length === 0 ? (
             <div className="empty-state">No saved programs yet.<br />Build a split and hit &quot;Save&quot;.</div>
-          ) : history.map(snap => {
-            const d = new Date(snap.created_at);
-            const ds = d.toLocaleDateString("de-DE") + " " + d.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-            return (
-              <div key={snap.id} className="hist-card">
-                <div className="hist-hdr">
-                  <div><div className="hist-name">{snap.name}</div><div className="hist-meta">{ds} &middot; {(snap.days||[]).length} days</div></div>
-                  <div className="btns-row">
-                    <button className="btn" onClick={() => loadSnap(snap.id)}>Load</button>
-                    <button className="btn btn-pdf" onClick={() => { const prev = [...days]; const prevDc = dayCounter; setDays(JSON.parse(JSON.stringify(snap.days))); setTab("builder"); setTimeout(() => { window.print(); setTimeout(() => { setDays(prev); setDayCounter(prevDc); }, 600); }, 300); }}>PDF</button>
-                    <button className="btn btn-html" onClick={() => exportSnapHTML(snap.id)}>HTML</button>
-                    <button className="btn btn-danger" onClick={() => deleteSnap(snap.id)}>&times;</button>
-                  </div>
-                </div>
-                <div className="hist-body">
-                  <div className="hist-days">
-                    {(snap.days||[]).map((day, i) => (
-                      <div key={i} className="hist-pill">
-                        <strong>Day {day.num}{day.label ? " \u00b7 " + day.label : ""}</strong><br />
-                        <span style={{ fontSize: "9px" }}>{day.exercises.map(e => exById(e.id)?.name || e.id).join(", ") || "\u2014"}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          ) : history.map(snap => (
+            <HistoryCard
+              key={snap.id}
+              snap={snap}
+              exById={exById}
+              apiPath="/api/programs"
+              onLoad={loadSnap}
+              onDelete={deleteSnap}
+              onUpdate={updated => setHistory(prev => prev.map(h => h.id === updated.id ? updated : h))}
+              onPrint={id => {
+                const s = history.find(h => h.id === id); if (!s) return;
+                const prev = [...days]; const prevDc = dayCounter;
+                setDays(JSON.parse(JSON.stringify(s.days))); setTab("builder");
+                setTimeout(() => { window.print(); setTimeout(() => { setDays(prev); setDayCounter(prevDc); }, 600); }, 300);
+              }}
+              onExportHTML={exportSnapHTML}
+            />
+          ))}
         </div>
 
         {/* STATS */}

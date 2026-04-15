@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Exercise, Day, Program, tStyle } from "./types";
+import HistoryCard from "./HistoryCard";
 
 const MUSCLE_GROUPS = ["all","glutes","abs","chest","back","shoulders","arms","legs"];
 const EQUIPMENT = ["all","barbell","dumbbell","cable","machine","bodyweight"];
@@ -267,30 +268,24 @@ export default function BodybuildingApp() {
 
         {/* HISTORY */}
         <div className={`panel${tab==="history"?" active":""}`}>
-          <div className="hero"><h1>Program History</h1><div className="hero-sub">Saved BB snapshots</div></div>
+          <div className="hero"><h1>Saved Programs</h1><div className="hero-sub">Click a program to expand &amp; edit sets/reps</div></div>
           <div className="btns-row" style={{marginBottom:"1rem"}}>
-            <button className="btn btn-danger" onClick={async()=>{if(!confirm("Clear all history?"))return;for(const h of history)await fetch("/api/bb-programs",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:h.id})});setHistory([]);}}>Clear history</button>
+            <button className="btn btn-danger" onClick={async()=>{if(!confirm("Clear all history?"))return;for(const h of history)await fetch("/api/bb-programs",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:h.id})});setHistory([]);}}>Clear all</button>
           </div>
           {history.length===0 ? <div className="empty-state">No saved programs yet.<br/>Build a split and hit &quot;Save&quot;.</div> :
-            history.map(snap => {
-              const d=new Date(snap.created_at);
-              const ds=d.toLocaleDateString("de-DE")+" "+d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
-              return (
-                <div key={snap.id} className="hist-card">
-                  <div className="hist-hdr">
-                    <div><div className="hist-name">{snap.name}</div><div className="hist-meta">{ds} &middot; {(snap.days||[]).length} days</div></div>
-                    <div className="btns-row">
-                      <button className="btn" onClick={()=>loadSnap(snap.id)}>Load</button>
-                      <button className="btn btn-html" onClick={()=>downloadBlob(buildBlob("BB · "+snap.name,snap.days),"bb-"+snap.name.replace(/[^a-z0-9]/gi,"-").toLowerCase()+".html")}>HTML</button>
-                      <button className="btn btn-danger" onClick={()=>deleteSnap(snap.id)}>&times;</button>
-                    </div>
-                  </div>
-                  <div className="hist-body"><div className="hist-days">{(snap.days||[]).map((day,i)=>(
-                    <div key={i} className="hist-pill"><strong>Day {day.num}{day.label?" · "+day.label:""}</strong><br/><span style={{fontSize:"9px"}}>{day.exercises.map(e=>exById(e.id)?.name||e.id).join(", ")||"—"}</span></div>
-                  ))}</div></div>
-                </div>
-              );
-            })}
+            history.map(snap => (
+              <HistoryCard
+                key={snap.id}
+                snap={snap}
+                exById={exById}
+                apiPath="/api/bb-programs"
+                onLoad={loadSnap}
+                onDelete={deleteSnap}
+                onUpdate={updated => setHistory(prev => prev.map(h => h.id === updated.id ? updated : h))}
+                onExportHTML={id => { const s=history.find(h=>h.id===id); if(!s) return; downloadBlob(buildBlob("BB · "+s.name,s.days),"bb-"+s.name.replace(/[^a-z0-9]/gi,"-").toLowerCase()+".html"); }}
+                accentColor="#d080e0"
+              />
+            ))}
         </div>
 
         {/* STATS */}
