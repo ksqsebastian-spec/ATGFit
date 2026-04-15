@@ -1,0 +1,42 @@
+-- Seed data: ATG exercise library
+-- Run after schema.sql to populate the exercises table
+
+INSERT INTO exercises (id, name, tags) VALUES
+  ('e02', 'Backward treadmill',        ARRAY['gym','strength']),
+  ('e03', 'ATG split squat',           ARRAY['gym','strength']),
+  ('e04', 'Seated good morning',       ARRAY['gym','strength']),
+  ('e05', 'RDL',                       ARRAY['gym','strength']),
+  ('e06', 'Back extension',            ARRAY['gym','strength']),
+  ('e07', 'Calf raises',               ARRAY['gym','strength']),
+  ('e08', 'Seated calf raise',         ARRAY['gym','strength']),
+  ('e09', 'Dip',                       ARRAY['gym','strength']),
+  ('e10', 'External rotation',         ARRAY['gym','strength']),
+  ('e11', 'Incline Powell raise',      ARRAY['gym','strength']),
+  ('e12', 'Y raises',                  ARRAY['gym','strength']),
+  ('e13', 'Pull up',                   ARRAY['gym','strength']),
+  ('e14', 'Row',                       ARRAY['gym','strength']),
+  ('e15', 'Pullover',                  ARRAY['gym','strength']),
+  ('e16', 'Banded retract',            ARRAY['gym','strength']),
+  ('e17', 'Face pull',                 ARRAY['gym','strength']),
+  ('e18', 'Cable pancake',             ARRAY['gym','mobility']),
+  ('e19', 'Incline pigeon',            ARRAY['gym','mobility']),
+  ('e20', 'Couch stretch',             ARRAY['gym','mobility']),
+  ('e21', 'Deep push up',              ARRAY['gym','strength']),
+  ('e22', 'L-sit',                     ARRAY['gym','strength']),
+  ('e23', 'Bridging',                  ARRAY['home','strength']),
+  ('e24', 'Blenis crunch',             ARRAY['gym','strength']),
+  ('e25', 'Blenis leg raise',          ARRAY['gym','strength']),
+  ('e26', 'QL extension',              ARRAY['gym','strength']),
+  ('e27', '90/90 swivel w/ raise',     ARRAY['home','mobility']),
+  ('e28', 'Hip flexor reach backs',    ARRAY['home','mobility']),
+  ('e29', '90/90 hip internal raises', ARRAY['home','mobility']),
+  ('e30', 'Seated QL stretch',         ARRAY['home','mobility']),
+  ('e31', 'Bird dog',                  ARRAY['home','strength']),
+  ('e32', 'Dead bug',                  ARRAY['home','strength']),
+  ('e33', 'Ab wheel',                  ARRAY['gym','strength']),
+  ('e34', 'Single leg RDL',            ARRAY['gym','strength']),
+  ('e35', 'Single leg glute bridge',   ARRAY['home','strength']),
+  ('e36', 'Side plank',                ARRAY['home','strength'])
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  tags = EXCLUDED.tags;
