@@ -162,6 +162,66 @@ body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-
 /* LOADING */
 .loading-state{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:12px;letter-spacing:0.08em}
 
+/* SECTION NAV */
+.section-nav{display:flex;align-items:center;gap:0;background:#1a1916;border-bottom:2px solid #333}
+.section-btn{padding:0.7rem 1.4rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-family:'DM Mono',monospace;background:none;border:none;color:#666;cursor:pointer;transition:color .15s,background .15s;font-weight:500}
+.section-btn:hover{color:#ccc}
+.section-btn.active.atg{color:#f0c040;border-bottom:2px solid #f0c040;margin-bottom:-2px}
+.section-btn.active.bb{color:#d080e0;border-bottom:2px solid #d080e0;margin-bottom:-2px}
+.section-btn.active.cardio{color:#60c080;border-bottom:2px solid #60c080;margin-bottom:-2px}
+
+/* BB TAGS */
+.tag-glutes{background:#fde8f0;color:#b03070;border:1px solid #e8a0c0}
+.tag-abs{background:#fff0e0;color:#b05010;border:1px solid #e8c080}
+.tag-chest{background:#e8f0fc;color:#2050b0;border:1px solid #90b0e0}
+.tag-back{background:#e8f8f0;color:#207050;border:1px solid #80c8a0}
+.tag-shoulders{background:#f0e8fc;color:#7030a0;border:1px solid #c090d8}
+.tag-biceps{background:#fefce8;color:#807010;border:1px solid #d0c060}
+.tag-triceps{background:#e8fcfc;color:#107080;border:1px solid #70c0c8}
+.tag-legs{background:#fdf0e8;color:#904820;border:1px solid #d8a880}
+.tag-barbell{background:#f0f0f0;color:#505050;border:1px solid #c0c0c0}
+.tag-dumbbell{background:#f8f8f8;color:#606060;border:1px solid #d0d0d0}
+.tag-cable{background:#f0f4e8;color:#506020;border:1px solid #b0c080}
+.tag-machine{background:#e8e8f0;color:#404070;border:1px solid #a0a0c8}
+.tag-bodyweight{background:#f8f0e8;color:#705030;border:1px solid #c8a880}
+
+/* FILTER SECONDARY ROW */
+.filter-row2{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.75rem}
+
+/* CARDIO */
+.cardio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:1rem}
+.cardio-card{background:var(--s1);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.cardio-hdr{padding:10px 14px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cardio-title{font-size:13px;font-weight:500}
+.cardio-meta{font-size:10px;color:var(--muted)}
+.cardio-body{padding:12px 14px}
+.activity-icon{font-size:18px;margin-right:6px}
+.week-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+.week-table th{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);padding:4px 6px;text-align:left;border-bottom:1px solid var(--border);font-weight:400}
+.week-table td{padding:5px 6px;border-bottom:1px solid var(--border)}
+.week-table tr:last-child td{border-bottom:none}
+.week-table tr.done td{color:var(--muted);text-decoration:line-through}
+.week-check{cursor:pointer;accent-color:var(--accent)}
+
+.hiit-protocols{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:1rem}
+.protocol-card{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:14px}
+.protocol-name{font-size:13px;font-weight:500;margin-bottom:6px}
+.protocol-detail{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px}
+.hiit-log-card{background:var(--s1);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.hiit-log-name{font-size:12px;font-weight:500}
+.hiit-log-meta{font-size:10px;color:var(--muted)}
+
+.form-card{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:1rem}
+.form-card h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;margin-bottom:1rem}
+.form-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:0.75rem}
+.form-label{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.form-inp{padding:7px 10px;background:var(--s2);border:1px solid var(--border);border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);outline:none}
+.form-inp:focus{border-color:var(--accent)}
+.form-sel{padding:7px 10px;background:var(--s2);border:1px solid var(--border);border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);outline:none;cursor:pointer}
+.subtab-row{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
+.subtab{padding:0.7rem 1.2rem;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Mono',monospace;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.subtab.active{color:var(--text);border-bottom-color:var(--accent)}
+
 /* PRINT */
 @media print{
   .nav,.btns-row,.pool-wrap,.day-del,.ex-del,.filter-row,.sets-inp,.add-tag-btn,.tag-popup,.modal-bg,.note{display:none!important}

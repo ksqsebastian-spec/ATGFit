@@ -1,5 +1,5 @@
-import FitnessApp from "./components/FitnessApp";
+import AppShell from "./components/AppShell";
 
 export default function Home() {
-  return <FitnessApp />;
+  return <AppShell />;
 }
