@@ -4,7 +4,7 @@ import { getDb } from "@/lib/db";
 export async function GET() {
   const sql = getDb();
   const [plans, logs] = await Promise.all([
-    sql`SELECT id, name, activity, base_distance, unit, weeks_completed, created_at FROM cardio_plans ORDER BY created_at DESC`,
+    sql`SELECT id, name, activity, base_distance, unit, weeks_completed, metadata, created_at FROM cardio_plans ORDER BY created_at DESC`,
     sql`SELECT id, protocol, duration_min, notes, logged_at FROM hiit_logs ORDER BY logged_at DESC`,
   ]);
   return NextResponse.json({ plans, logs });
@@ -14,9 +14,9 @@ export async function POST(request: Request) {
   const body = await request.json();
   const sql = getDb();
   if (body.type === "plan") {
-    const { id, name, activity, base_distance, unit } = body;
-    await sql`INSERT INTO cardio_plans (id, name, activity, base_distance, unit)
-      VALUES (${id}, ${name}, ${activity}, ${base_distance}, ${unit})`;
+    const { id, name, activity, base_distance, unit, metadata = {} } = body;
+    await sql`INSERT INTO cardio_plans (id, name, activity, base_distance, unit, metadata)
+      VALUES (${id}, ${name}, ${activity}, ${base_distance ?? 0}, ${unit}, ${JSON.stringify(metadata)})`;
   } else if (body.type === "hiit") {
     const { id, protocol, duration_min, notes } = body;
     await sql`INSERT INTO hiit_logs (id, protocol, duration_min, notes)
